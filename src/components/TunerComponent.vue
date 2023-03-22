@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>{{name()}}</h1>
+    <!-- <h1>{{name()}}</h1> -->
 
-    <div id="tuner" style="background-color: red;">
+    <div id="tuner" style="background-color: lightgray;">
         
     </div>
 

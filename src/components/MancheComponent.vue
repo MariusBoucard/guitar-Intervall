@@ -110,9 +110,9 @@ export default {
     },
     methods: {
         isChoosedTune(note){
-            console.log(note.tuning)
+            // console.log(note.tuning)
             var find = this.notesSelectedIntra.find(notes=> notes.note === note.tuning)
-            console.log(find)
+            // console.log(find)
             return find.enabled
         },  
         isChoosed(corde, index) {
@@ -130,7 +130,7 @@ export default {
 
             var note = this.listeNotes.find((notes) => notes.id === this.cordeListe[corde.cordeId][index])
             var enabledornot = this.notesSelectedIntra.find((notes) => notes.note === note.note);
-            console.log('caca')
+            // console.log('caca')
             enabledornot.enabled = !enabledornot.enabled
         },
         renderChoosen(corde, index) {
@@ -158,7 +158,7 @@ export default {
         //    console.log(lettre)
         if(this.sapinNoel){
              if(lettre === this.notePlayed){
-                console.log("caca")
+                // console.log("caca")
                 return 'red '
             }
         }
