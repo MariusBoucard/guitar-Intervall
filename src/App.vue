@@ -10,6 +10,7 @@
         <TunerComponent @changenote="changeNote($event,note)" :notePlayed="this.notePlayed" ></TunerComponent>
       </div>
     </div>
+    <NoteAJouerComponent></NoteAJouerComponent>
    
   </div>
   <div class="columnd">
@@ -21,21 +22,17 @@
 
 <script>
 import MancheComponent from './components/MancheComponent.vue'
-import NotesSelectedComponent from './components/NotesSelectedComponent.vue';
 import TuningComponent from './components/TuningComponent.vue';
-import ColorComponent from './components/ColorComponent.vue';
-import GammeFinderComponent from './components/GammeFinderComponent.vue';
 import TunerComponent from './components/TunerComponent.vue';
-
+import NoteAJouerComponent from './components/NoteAJouerComponent.vue';
 export default {
   name: 'App',
   components: {
     TunerComponent,
     MancheComponent,
-    NotesSelectedComponent,
+   NoteAJouerComponent,
     TuningComponent,
-    ColorComponent,
-    GammeFinderComponent
+   
   },
   data () {
     return {
@@ -194,5 +191,7 @@ export default {
   display: table;
   clear: both;
 }
-
+.horizontalli {
+  float: left;
+}
 </style>
