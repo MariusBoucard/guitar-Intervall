@@ -15,10 +15,13 @@
 
             </select>
 
-        <h1>{{ this.newNote }}</h1>
+        <h1>{{ this.newNote.note }}</h1>
         <h5>{{ this.intervalText }}</h5>
         <h5>Score : {{ this.score }}</h5>
         <p> Niveau</p>
+       
+        <p>{{ this.noteUser }}</p>
+        <p>{{ this.index }}</p>
 
     </div>
 </template>
@@ -42,11 +45,19 @@ export default{
             tempo : 30,
             metronomeNumerateur :4,
             metronomeDenominateur :4,
-            lastNote : "A",
-            newNote :"A",
+            oldNote : {
+                "note" : "A",
+                "expectedTime" : "000000"
+            },
+            newNote : {
+                "note" : "A",
+                "expectedTime" : "000000"
+            },
             Interval : 3,
             score : 0,
             listeNoteTot : this.listeNote,
+            noteUser : this.noteTuner,
+            notesPlayed : [],
             intervalListe : [
                 { id : 0 , nom : "R"},
                 { id : 1 , nom : "b2"},
@@ -79,6 +90,23 @@ export default{
 
 
 
+    },
+    watch : {
+        noteTuner() {
+                this.noteUser = this.noteTuner
+                var date = new Date()
+                
+                var note = { "note" : this.noteUser , "time" : date.getMilliseconds()+date.getSeconds()*1000+date.getHours()*3600*1000}
+                if(this.notesPlayed.length<100){
+                    console.log(note+"-100")
+                    this.notesPlayed.push(note)
+                } else {
+                    this.notesPlayed.shift();
+                    this.notesPlayed.push(note)
+
+                }
+            }
+        
     },
     computed : {
             intervalText(){
@@ -121,20 +149,15 @@ export default{
                au.play()
                 console.log("coup faible")
             }
-            //Lets go sound here
-
             this.index+=1
         },
         play(){
             var timeInterval = 60/this.tempo  
-            //TODO -> Ajout du denominateur
             timeInterval = 4*timeInterval/this.metronomeDenominateur
-            ///Calcul du temps tous les cb appeler la fct
-            console.log(timeInterval)
             this.fct = setInterval(() => this.calcNewNote(), timeInterval*1000);
         },
         calcNote(){
-               var find =  this.listeNoteTot.find(note => note.note === this.newNote)
+               var find =  this.listeNoteTot.find(note => note.note === this.newNote.note)
                var noteExpected = (find.id + this.Interval)%12
                var noteExp = this.listeNoteTot.find(note => note.id === noteExpected)
                return noteExp.note
@@ -142,38 +165,67 @@ export default{
         generateNewNote(){
             var ran = Math.floor(Math.random() * 12);
             var find = this.listeNoteTot.find(note => note.id === ran)
-            return find.note
+            return {"note" : find.note}
         },
-        calcNewNote(){
-             
-            //Ajout dans une liste membre de classe ou tout simplement une variable :
-            this.noteAttendue = {"note" : this.calcNote, "time" : "Comment on get le time"}
-
-            if(this.index%this.metronomeDenominateur===0){
-                // this.oldNote=this.newNote
-                this.newNote = this.generateNewNote()
-                this.Interval = Math.floor(Math.random() * 12);
+        //Possibilité d inclure la gaussienne ici 
+        bienJoue(){
+            var plusprochenote = this.notesPlayed.shift()
+            for ( var a in this.notesPlayed){
+                if(Math.abs(a.time-this.oldNote.timeExpected)<Math.abs(plusprochenote-this.oldNote.timeExpected)){
+                        plusprochenote = a
+                }
+            }
+            if(plusprochenote.note===this.oldNote.note){
+                return true
             }
             else{
-                this.Interval = Math.floor(Math.random() * 12);
-
-
+                return false
             }
-            console.log(this.Interval)
-            this.playSound()
-           
 
-            //Lancer le calcul après 0.5 timeinterval et regarder toutes les notes qui ont ete jouée depuis 1 timetinterval de temps
+        },
+        calcNewNote(){
+            //Comparaison ici pour le score §§§§§
+                     //Lancer le calcul après 0.5 timeinterval et regarder toutes les notes qui ont ete jouée depuis 1 timetinterval de temps
             //prendre la plus proche du centre qui equivaut au coup de metronome.
             // Par rapport à une guassiene centrée au temps de metronome, definir la precision par rapport à l'endroit où on tape.
 
             console.log("caluculus")
-            if(this.calcNote() === this.noteTuner){
+            if(this.bienJoue()){
                     this.score+=1
                     //Afficher un truc stympa
             }else{
                 //afficher un truc pas cool
             }
+            
+            if(this.index%this.metronomeDenominateur===0){
+                // this.oldNote=this.newNote
+                this.oldNote = this.newNote
+                this.newNote = this.generateNewNote()
+                this.Interval = Math.floor(Math.random() * 12);
+                var date = new Date()
+                var timeInterval = 60/this.tempo  
+                  timeInterval = 4*timeInterval/this.metronomeDenominateur
+                this.newNote = {
+                    "note" : this.calcNote(),
+                    "expectedTime" :  date.getMilliseconds()+date.getSeconds()*1000+date.getHours()*3600*1000 +timeInterval*1000
+                }
+            }
+            else{
+                this.oldNote = this.newNote
+                this.Interval = Math.floor(Math.random() * 12);
+                date = new Date()
+                timeInterval = 60/this.tempo  
+                timeInterval = 4*timeInterval/this.metronomeDenominateur
+                this.newNote = {
+                    "note" : this.calcNote(),
+                    "expectedTime" :  date.getMilliseconds()+date.getSeconds()*1000+date.getHours()*3600*1000 +timeInterval*1000
+                }
+
+            }
+            this.playSound()
+           
+
+   
 
 
 
