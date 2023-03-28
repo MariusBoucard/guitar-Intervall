@@ -145,13 +145,10 @@ export default{
             return find.note
         },
         calcNewNote(){
-            console.log("caluculus")
-            if(this.calcNote() === this.noteTuner){
-                    this.score+=1
-                    //Afficher un truc stympa
-            }else{
-                //afficher un truc pas cool
-            }
+             
+            //Ajout dans une liste membre de classe ou tout simplement une variable :
+            this.noteAttendue = {"note" : this.calcNote, "time" : "Comment on get le time"}
+
             if(this.index%this.metronomeDenominateur===0){
                 // this.oldNote=this.newNote
                 this.newNote = this.generateNewNote()
@@ -164,6 +161,19 @@ export default{
             }
             console.log(this.Interval)
             this.playSound()
+           
+
+            //Lancer le calcul après 0.5 timeinterval et regarder toutes les notes qui ont ete jouée depuis 1 timetinterval de temps
+            //prendre la plus proche du centre qui equivaut au coup de metronome.
+            // Par rapport à une guassiene centrée au temps de metronome, definir la precision par rapport à l'endroit où on tape.
+
+            console.log("caluculus")
+            if(this.calcNote() === this.noteTuner){
+                    this.score+=1
+                    //Afficher un truc stympa
+            }else{
+                //afficher un truc pas cool
+            }
 
 
 

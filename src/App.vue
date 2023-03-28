@@ -18,10 +18,11 @@
     </div>
     <div class="columnd">
       <div style="margin-top: 150px; background-color: lightgray;">
-          <NoteAJouerComponent :notesSelected=this.noteSlectedList :listeNote=this.nbnotes :noteTuner=this.notePlayed>
+          <NoteAJouerComponent v-show="true" :notesSelected=this.noteSlectedList :listeNote=this.nbnotes :noteTuner=this.notePlayed>
           </NoteAJouerComponent>
          
         </div>
+        <!-- <p>{{this.caca()}}</p> -->
     </div>
   </div>
 </template>
@@ -105,6 +106,10 @@ export default {
 
   },
   methods: {
+    // caca(){
+    //   console.log(new Date())
+    //   return new Date().getMilliseconds()
+    // },
     changeNote(note) {
       // console.log("cacapute"+note)
       if (this.name(note) !== undefined) {
