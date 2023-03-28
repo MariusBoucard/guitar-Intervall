@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <button @click="this.play()">play</button>
         <button @click="this.stop()">Stop play</button>
         <p>Dropdown tempo</p>
@@ -176,9 +176,11 @@ export default{
                 }
             }
             if(plusprochenote.note===this.oldNote.note){
+                this.$emit('greatNote', true)
                 return true
             }
             else{
+                this.$emit('greatNote', false)
                 return false
             }
 

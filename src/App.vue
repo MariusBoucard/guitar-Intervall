@@ -2,23 +2,25 @@
   <div class="row">
     <div class="column">
       <div style=" display: flex;">
-        <MancheComponent :notePlayed="this.notePlayed" :diap=this.diapason :nbFrettes=this.nbfrettes
+        <MancheComponent :noteGreat=this.noteGreat :notePlayed="this.notePlayed" :diap=this.diapason :nbFrettes=this.nbfrettes
           :colorNotes=this.colors :notesSelected="this.noteSlectedList" :tuning="this.tuningList" />
       </div>
       <div class="row">
         <div style="padding-top:50px">
     
           <TunerComponent @changenote="changeNote($event, note)" :notePlayed="this.notePlayed"></TunerComponent>
-          <TuningComponent @diap="changeDiap($event)" :diapason=this.diapason :notesColor=this.colors
-            :notesnumber=this.nbnotes :tuningList=this.tuningList :cordesNumber=this.nbStrings></TuningComponent>
+         
 
         </div>
       </div>
 
     </div>
     <div class="columnd">
-      <div style="margin-top: 150px; background-color: lightgray;">
-          <NoteAJouerComponent v-show="true" :notesSelected=this.noteSlectedList :listeNote=this.nbnotes :noteTuner=this.notePlayed>
+      <button @click="this.displayParameters()">Change Tuning</button>
+      <TuningComponent v-show="this.showParameters"  @diap="changeDiap($event)" :diapason=this.diapason :notesColor=this.colors
+            :notesnumber=this.nbnotes :tuningList=this.tuningList :cordesNumber=this.nbStrings></TuningComponent>
+      <div style="margin-top:100px;padding: 20px; background-color: lightgray; border-radius: 15px;">
+          <NoteAJouerComponent  @greatNote="resultPlayed($event,val)" :notesSelected=this.noteSlectedList :listeNote=this.nbnotes :noteTuner=this.notePlayed>
           </NoteAJouerComponent>
          
         </div>
@@ -47,6 +49,7 @@ export default {
       diapason: 648,
       nbStrings: 7,
       notePlayed: "",
+      showParameters : false,
       nbnotes: [
         { id: 0, note: "A" },
         { id: 1, note: "AS" },
@@ -61,6 +64,7 @@ export default {
         { id: 10, note: "G" },
         { id: 11, note: "GS" },
       ],
+      noteGreat :  undefined,
       tuningList: [
         { cordeId: 0, tuning: 'E' },
         { cordeId: 1, tuning: 'B' },
@@ -110,6 +114,9 @@ export default {
     //   console.log(new Date())
     //   return new Date().getMilliseconds()
     // },
+    resultPlayed(noteBoolean){
+      this.noteGreat = noteBoolean
+    },
     changeNote(note) {
       // console.log("cacapute"+note)
       if (this.name(note) !== undefined) {
@@ -132,6 +139,9 @@ export default {
       const note12 = (note >= 0) ? note % 12 : note % 12 + 12;
       var i = Math.floor((note12 + 0.5) % 12);
       return names[i];
+    },
+    displayParameters(){
+      this.showParameters = ! this.showParameters
     }
   },
   watch: {

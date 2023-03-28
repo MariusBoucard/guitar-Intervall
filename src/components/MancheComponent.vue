@@ -3,6 +3,9 @@
     <h1>Guitar's neck</h1>
     <!-- <p>{{ this.tuningintra }}</p> -->
         <h1>{{ this.notePlayed}}</h1>
+        <img src="../img/no.png" style="width:50px" v-show="! this.great"/>
+        <img src="../img/yes.png" style="width:50px" v-show="this.great"/>
+
         <p>Activer le sapin de noel :</p>
         <button class="button" style="border : 1px solid black" @click="allumerSapin()" :style="{ backgroundColor : getStateButton()}">Sapinnnnn</button>
     <div>
@@ -79,7 +82,8 @@ export default {
         colorNotes: { required: true, type: [Object] },
         nbFrettes: { required: true, type: Number },
         diap : { required : true, type : Number},
-        notePlayed : { required : true, type : String}
+        notePlayed : { required : true, type : String},
+        great : {required : true, type : Boolean}
     },
     data() {
         return {
